@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pizza {
+  id          Int @id @default(autoincrement())
+  name        String
+  description String
+  image       String
+  price       Int
+  weight Int?
+  category String?
+
+  collection PizzaCollection[]
+
+  @@map("pizza")
+}
+
+model PizzaCollection {
+  pizza_name String
+  pizzaId Int
+  collectionId Int 
+
+  pizza Pizza @relation(fields: [pizzaId], references: [id])
+  collection IngredientCollection @relation(fields: [collectionId], references: [id])
+
+  @@id([pizzaId, collectionId])
+  @@map("pizza_collection")
+}
+
+model IngredientCollection {
+  id         Int @id @default(autoincrement())
+  name       String
+
+  pizzas PizzaCollection[]
+  ingredients IngredientOnCollections[]
+
+  @@map("ingridient_collection")
+}
+
+model Ingredient {
+  id Int @id @default(autoincrement())
+  ingridient_name String
+  image String
+
+  collection  IngredientOnCollections[]
+
+  @@map("ingridient")
+}
+
+model IngredientOnCollections {
+  ingredientId Int
+  collectionId Int
+
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  collection  IngredientCollection @relation(fields: [collectionId], references: [id])
+
+  @@id([ingredientId, collectionId])
+  @@map("ingredient_on_collections")
+}
+
+// Сделать доп. ингридиенты
