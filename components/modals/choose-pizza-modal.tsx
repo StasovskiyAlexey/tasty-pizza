@@ -25,13 +25,13 @@ export default function PizzaModal() {
     setEnabled(false);
   }
 
-  function increment() {
+  /* function increment() {
     setCounter(prev => prev + 1);
   }
 
   function decrement() {
     setCounter(prev => prev - 1);
-  }
+  } */
 
   return (
     <Dialog onOpenChange={() => {mainStore.toggler('pizza', false); clearAllParams()}} open={mainStore.pizza}>

@@ -1,51 +1,49 @@
 'use client'
 
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group"
 import { useStoreContext } from "@/providers/store-provider"
-import { useEffect, useState } from "react";
+import {Button, ButtonGroup} from "@heroui/button";
 
 export default function PizzaSelectType() {
-  const {dataStore} = useStoreContext();
-  const [value, setValue] = useState<string>('all');
-  const pizzaData = dataStore.pizzaData;
-
-  useEffect(() => {
-    switch(value) {
-      case 'all':
-        dataStore.getFilteredData(pizzaData)
-        break;
-      case 'cheese': 
-        dataStore.getFilteredData(pizzaData.filter(item => item.category === 'cheese'))
-        break;
-      case 'mushroom': 
-        dataStore.getFilteredData(pizzaData.filter(item => item.category === 'mushroom'))
-        break;
-      case 'meat': 
-        dataStore.getFilteredData(pizzaData.filter(item => item.category === 'meat'))
-        break;
-      default: 
-        dataStore.getFilteredData(pizzaData)
-    }
-  }, [value])
+  const {dataStore, filterStore} = useStoreContext();
+  const category = filterStore.category;
 
   return (
-    <ToggleGroup onValueChange={(value) => setValue(value)} variant="outline" type="single">
-       <ToggleGroupItem value="all" aria-label="all">
-        <span className="px-4">Усі</span>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="meat" aria-label="meat">
-        <span className="px-4">М'ясна</span>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="cheese" aria-label="cheese">
-        <span className="px-4">Сирна</span>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="mushroom" aria-label="mushroom">
-        <span className="px-4">Грибна</span>
-      </ToggleGroupItem>
-    </ToggleGroup>
+    <div className="flex justify-start">
+      <ButtonGroup variant="bordered" radius="md">
+        <Button
+          disabled={category === "all"}
+          className={category === "all" ? "bg-orange-500 border-none text-white px-8" : "border-none px-8"}
+          onPress={() => filterStore.setCategory("all", dataStore.pizzaData)}
+          color={category === "all" ? "primary" : "default"}
+        >
+          Усі
+        </Button>
+        <Button
+          disabled={category === "meat"}
+          className={category === "meat" ? "bg-orange-500 border-none text-white px-8" : "border-none px-8"}
+          onPress={() => filterStore.setCategory("meat", dataStore.pizzaData)}
+          color={category === "meat" ? "primary" : "default"}
+        >
+          М&apos;ясна
+        </Button>
+        <Button
+          disabled={category === "cheese"}
+          className={category === "cheese" ? "bg-orange-500 border-none text-white px-8" : "border-none px-8"}
+          onPress={() => filterStore.setCategory("cheese", dataStore.pizzaData)}
+          color={category === "cheese" ? "primary" : "default"}
+        >
+          Сирна
+        </Button>
+        <Button
+          disabled={category === "mushroom"}
+          className={category === "mushroom" ? "bg-orange-500 border-none text-white px-8" : "border-none px-8"}
+          onPress={() => filterStore.setCategory("mushroom", dataStore.pizzaData)}
+          color={category === "mushroom" ? "primary" : "default"}
+        >
+          Грибна
+        </Button>
+      </ButtonGroup>
+    </div>
   )
 }
 

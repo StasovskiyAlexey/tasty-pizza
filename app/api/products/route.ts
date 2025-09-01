@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma-client";
-import { success } from "@/lib/response";
+import { failure, success } from "@/lib/response";
 import { Prisma } from "@prisma/client";
 
 export type PizzaWithCollections = Prisma.PizzaGetPayload<{
@@ -42,5 +42,6 @@ export async function GET() {
     return success(allPizzas, 200)
   } catch (e) {
     console.log(e);
+    return failure('Помилка отримання продуктів');
   }
 }

@@ -8,8 +8,11 @@ import { Skeleton } from "./ui/skeleton";
 import PizzaSelectType from "./filter/pizza-select-type";
 import PizzaFilterBar from "./filter/pizza-filter-bar";
 
+import no_pizza from '@/public/no_pizza.png'
+import { useEffect } from "react";
+
 export default function ProductList() {
-  const {mainStore, dataStore} = useStoreContext();
+  const {mainStore, dataStore, filterStore} = useStoreContext();
 
   const {isLoading} = useQuery<PizzaWithCollections[]>({
     queryKey: ['pizza-list'],
@@ -21,15 +24,25 @@ export default function ProductList() {
       return data.data;
     },
   })
-  
+
+  useEffect(() => {
+    filterStore.updateFiltered(dataStore.pizzaData)
+  }, [isLoading])
+
+  useEffect(() => {
+    console.log(filterStore.filteredPizza)
+  }, [filterStore.filteredPizza])
+
+  const filteredPizzaData = filterStore.filteredPizza;
+
   return (
     <div className="pizza-list">
       <div className="pizza-list__container max-w-7xl mx-auto grid my-12">
         <PizzaSelectType/>
         <div className="grid md:grid-cols-[20%_80%] py-12">
           <PizzaFilterBar/>
-          <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">
-            {!isLoading ? dataStore.filteredProducts?.map(pizza => (
+          
+            {!isLoading ? (filteredPizzaData.length >= 1 ? <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">{filteredPizzaData.map(pizza => (
               <div key={pizza.id} onClick={() => {mainStore.toggler('pizza', true); dataStore.getPizza(pizza)}} className="pizza-item rounded-2xl flex flex-col items-center max-w-72 mx-auto hover:opacity-90 transition-opacity cursor-pointer hover:shadow-lg duration-300 p-4">
                 <Image src={pizza.image} alt={pizza.name} width={300} height={300}/>
                 <div className="pizza-item__info flex flex-col gap-4 w-full">
@@ -43,7 +56,12 @@ export default function ProductList() {
                     })}
                 </div>
               </div>
-            )) : (
+              ))}
+              </div>
+              : <div className="flex flex-col justify-center items-center">
+              <Image src={no_pizza} alt="" className="max-w-32"/>
+              <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
+              </div>) : <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">{(
               Array.from({length: 6 }).map((_, i) => (
                 <div
                   key={i}
@@ -58,8 +76,8 @@ export default function ProductList() {
                   </div>
                 </div>
               ))
-            )}
-          </div>
+            )}</div>}
+          
         </div>
       </div>
     </div>

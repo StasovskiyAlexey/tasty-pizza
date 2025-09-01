@@ -3,16 +3,16 @@ import { Pizza } from "@prisma/client";
 import { create } from "zustand";
 
 export interface DataStore {
-  pizzaItem: Pizza;
+  pizzaItem: PizzaWithCollections;
   pizzaData: PizzaWithCollections[]
   filteredProducts: PizzaWithCollections[];
   getFilteredData: (data: PizzaWithCollections[]) => void;
   getPizzaData: (data: PizzaWithCollections[]) => void;
-  getPizza: (data: Pizza) => void;
+  getPizza: (data: PizzaWithCollections) => void;
 }
 
 const useDataStore = create<DataStore>((set) => ({
-  pizzaItem: {} as Pizza,
+  pizzaItem: {} as PizzaWithCollections,
   pizzaData: [],
   filteredProducts: [],
   getFilteredData: (data) => set({

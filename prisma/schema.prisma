@@ -53,6 +53,7 @@ model Ingredient {
   id Int @id @default(autoincrement())
   ingridient_name String
   image String
+  slug String?
 
   collection  IngredientOnCollections[]
 
