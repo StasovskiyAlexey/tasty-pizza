@@ -5,6 +5,8 @@ import Header from "@/components/header";
 import { Nunito } from 'next/font/google'
 import PizzaModal from "@/components/modals/choose-pizza-modal";
 import AppProvider from "@/providers/app-provider";
+import CartDrawer from "@/components/cart/cart-drawer";
+import AuthDrawer from "@/components/auth/auth-drawer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,6 +28,9 @@ export default function RootLayout({
     <html lang="ru">
       <body className={`${nunito.variable}`}>
         <AppProvider>
+          <AuthDrawer/>
+          <CartDrawer/>
+
           <PizzaModal/>     
 
           <Header/>

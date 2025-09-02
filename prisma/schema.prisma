@@ -71,4 +71,14 @@ model IngredientOnCollections {
   @@map("ingredient_on_collections")
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email String       @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("user")
+}
+
 // Сделать доп. ингридиенты

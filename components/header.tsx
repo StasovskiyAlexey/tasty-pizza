@@ -19,8 +19,8 @@ export default function Header() {
           <Link href='/'><Image src={logo} alt='logo' width={120} height={120}/></Link>
         </ul>
         <div className='md:flex xs:hidden gap-x-4'>
-          <Link className='bg-white p-3 rounded-full' href='/'><UserRound color='#000' size={20} /></Link>
-          <Link className='bg-white p-3 rounded-full' href='/'><ShoppingCart color='#000' size={20} /></Link>
+          <button onClick={() => mainStore.toggler('auth', true)} className='bg-white p-3 rounded-full'><UserRound color='#000' size={20} /></button>
+          <button onClick={() => mainStore.toggler('cart', true)} className='bg-white p-3 rounded-full'><ShoppingCart color='#000' size={20} /></button>
         </div>
 
         <div onClick={() => mainStore.toggler('menu', !mainStore.menu)} className={classNames(`tham md:hidden tham-e-squeeze tham-w-6`, { 'tham-active': mainStore.menu })}>
