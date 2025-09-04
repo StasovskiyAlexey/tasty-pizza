@@ -3,12 +3,7 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { addToast } from "@heroui/toast"
-
-interface LoginForm {
-  username: string
-  password: string
-}
+import { LoginForm, useAuthContext } from "@/providers/auth-provider"
 
 const schema = yup.object({
   username: yup
@@ -22,50 +17,28 @@ const schema = yup.object({
 })
 
 export default function Login() {
+  const {login} = useAuthContext();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<LoginForm>({
     resolver: yupResolver(schema),
   })
 
-  async function login(form: LoginForm) {
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: form.username,
-          password: form.password
-        })
-      });
-
-      const data = await res.json();
-      console.log(data)
-      if (res.ok) {
-        addToast({title: data.success})
-      } else {
-        addToast({title: data.error})
-      }
-
-      return data.data;
-    } catch(e) {
-      console.log(e)
-    }
-  }
-
   const onSubmit = async (data: LoginForm) => {
     login(data)
+    reset()
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-sm mx-auto mt-4 flex flex-col gap-4"
+      className="w-full mx-auto mt-4 flex flex-col gap-4"
     >
       <div>
-        <label className="block mb-1 font-medium">Ім&apos;я користувача</label>
+        <span className="block mb-1 font-medium">Ім&apos;я користувача</span>
         <input
           type="text"
           {...register("username")}
@@ -78,7 +51,7 @@ export default function Login() {
       </div>
 
       <div>
-        <label className="block mb-1 font-medium">Пароль</label>
+        <span className="block mb-1 font-medium">Пароль</span>
         <input
           type="password"
           {...register("password")}
@@ -95,7 +68,7 @@ export default function Login() {
         disabled={isSubmitting}
         className="bg-orange-500 text-white rounded py-2 hover:bg-orange-600"
       >
-        {isSubmitting ? "Вход..." : "Войти"}
+        <span>{isSubmitting ? "Виконується вхід..." : "Вхід"}</span>
       </button>
     </form>
   )

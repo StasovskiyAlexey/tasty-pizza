@@ -29,17 +29,13 @@ export default function ProductList() {
     filterStore.updateFiltered(dataStore.pizzaData)
   }, [isLoading])
 
-  useEffect(() => {
-    console.log(filterStore.filteredPizza)
-  }, [filterStore.filteredPizza])
-
   const filteredPizzaData = filterStore.filteredPizza;
 
   return (
     <div className="pizza-list">
-      <div className="pizza-list__container max-w-7xl mx-auto grid my-12">
+      <div className="pizza-list__container max-w-7xl mx-auto grid my-12 w-11/12">
         <PizzaSelectType/>
-        <div className="grid md:grid-cols-[20%_80%] py-12">
+        <div className="grid md:grid-cols-[20%_80%] py-8">
           <PizzaFilterBar/>
           
             {!isLoading ? (filteredPizzaData.length >= 1 ? <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">{filteredPizzaData.map(pizza => (

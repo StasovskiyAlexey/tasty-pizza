@@ -24,13 +24,13 @@ export default function PizzaFilterBar() {
     getIngredients();
   }, [])
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(dataStore.filteredProducts, ingridients)
-  }, [dataStore.filteredProducts])
+  }, [dataStore.filteredProducts]) */
 
   return (
     <aside>
-      <div className="filter-bar-container flex gap-y-4 flex-col h-1/2">
+      <div className="filter-bar-container lg:flex xs:hidden gap-y-4 flex-col h-1/2">
         <div className="flex justify-between">
           <h1>Інгредієнти</h1>
           {ingredients.length > 0 ? <button onClick={() => clearFilters(pizzaData)} className="flex bg-orange-400 px-3 rounded-sm text-white w-max items-center">Очистити <X size={20}/></button> : null}

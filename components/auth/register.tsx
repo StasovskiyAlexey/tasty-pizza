@@ -5,12 +5,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
 import {addToast} from "@heroui/react";
+import { RegisterForm, useAuthContext } from "@/providers/auth-provider";
 
-export interface RegisterForm {
-  username: string;
-  email: string;
-  password: string;
-}
+
 
 const schema = yup.object({
   username: yup
@@ -28,51 +25,28 @@ const schema = yup.object({
 })
 
 export default function Register() {
+  const {registration} = useAuthContext();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
   })
 
-  async function registration(form: RegisterForm) {
-    try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: form.username,
-          email: form.email,
-          password: form.password
-        })
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        addToast({title: data.success})
-      } else {
-        addToast({title: data.error})
-      }
-
-      return data.data;
-    } catch(e) {
-      console.log(e)
-    }
-  }
-
   const onSubmit = async (data: RegisterForm) => {
-    registration(data)
+    registration(data);
+    reset();
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-sm mx-auto mt-4 flex flex-col gap-4"
+      className="w-full mx-auto mt-4 flex flex-col gap-4"
     >
       <div>
-        <label className="block mb-1 font-medium">Ім&apos;я користувача</label>
+        <span className="block mb-1 font-medium">Ім&apos;я користувача</span>
         <input
           type="text"
           {...register("username")}
@@ -85,7 +59,7 @@ export default function Register() {
       </div>
 
       <div>
-        <label className="block mb-1 font-medium">Пошта</label>
+        <span className="block mb-1 font-medium">Пошта</span>
         <input
           type="text"
           {...register("email")}
@@ -98,7 +72,7 @@ export default function Register() {
       </div>
 
       <div>
-        <label className="block mb-1 font-medium">Пароль</label>
+        <span className="block mb-1 font-medium">Пароль</span>
         <input
           type="password"
           {...register("password")}
@@ -115,7 +89,7 @@ export default function Register() {
         disabled={isSubmitting}
         className="bg-orange-500 text-white rounded py-2 hover:bg-orange-600"
       >
-        {isSubmitting ? "Реєстрація..." : "Зареєструватися"}
+        <span>{isSubmitting ? "Реєстрація..." : "Зареєструватися"}</span>
       </button>
     </form>
   )

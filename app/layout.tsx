@@ -7,6 +7,7 @@ import PizzaModal from "@/components/modals/choose-pizza-modal";
 import AppProvider from "@/providers/app-provider";
 import CartDrawer from "@/components/cart/cart-drawer";
 import AuthDrawer from "@/components/auth/auth-drawer";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,10 +31,11 @@ export default function RootLayout({
         <AppProvider>
           <AuthDrawer/>
           <CartDrawer/>
-
           <PizzaModal/>     
 
           <Header/>
+          <Toaster />
+          
           {children}
         </AppProvider>
       </body>

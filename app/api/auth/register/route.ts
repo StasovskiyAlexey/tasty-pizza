@@ -16,12 +16,12 @@ export async function POST(req: NextRequest) {
     }
 
     const existingUser = await prisma.user.findFirst({
-     where: {
-      OR: [
-        { username },
-        { email }
-      ]
-  }
+      where: {
+          OR: [
+            { username },
+            { email }
+          ]
+      }
     })
 
     if (existingUser) {
@@ -30,11 +30,17 @@ export async function POST(req: NextRequest) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         username: username,
         email: email,
         password: hashedPassword
+      }
+    })
+
+    await prisma.userCart.create({
+      data: {
+        userId: user.id
       }
     })
 

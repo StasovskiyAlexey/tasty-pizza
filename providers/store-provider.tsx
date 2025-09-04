@@ -7,11 +7,13 @@ import useFilterStore from "@/store/filter-store";
 import useMainStore from "@/store/main-store";
 
 import { createContext, useContext } from "react";
+import useAuthStore, { userStore } from "@/store/user-store";
 
 type StoresContextType = {
   mainStore: MainStore;
   dataStore: DataStore;
   filterStore: FilterStore;
+  userStore: userStore
 };
 
 const StoreContext = createContext<StoresContextType | undefined>(undefined);
@@ -20,8 +22,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const mainStore = useMainStore();
   const dataStore = useDataStore();
   const filterStore = useFilterStore();
+  const userStore = useAuthStore();
 
-  return <StoreContext.Provider value={{mainStore, dataStore, filterStore}}>
+  return <StoreContext.Provider value={{mainStore, dataStore, filterStore, userStore}}>
     {children}
   </StoreContext.Provider>
 }

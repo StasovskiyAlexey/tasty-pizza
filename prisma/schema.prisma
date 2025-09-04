@@ -22,7 +22,10 @@ model Pizza {
   weight Int?
   category String?
 
+  cartItems UserCartItem[]
   collection PizzaCollection[]
+
+  orderItems OrderItem[]
 
   @@map("pizza")
 }
@@ -71,12 +74,63 @@ model IngredientOnCollections {
   @@map("ingredient_on_collections")
 }
 
-model User {
+model UserCart {
+  id        Int          @id @default(autoincrement())
+  userId    Int          @unique
+  user      User         @relation(fields: [userId], references: [id])
+
+  items     UserCartItem[]
+  @@map("user-cart")
+}
+
+model UserCartItem {
+  id        Int        @id @default(autoincrement())
+  cartId    Int
+  cart      UserCart   @relation(fields: [cartId], references: [id])
+
+  productId Int
+  product   Pizza    @relation(fields: [productId], references: [id])
+
+  quantity  Int        @default(1)
+
+  @@unique([cartId, productId]) // чтобы один товар не дублировался в корзине
+  @@map("user-cart-item")
+}
+
+model Order {
   id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email String       @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  items     OrderItem[]
+
+  @@map("order")
+}
+
+model OrderItem {
+  id       Int    @id @default(autoincrement())
+  orderId  Int
+  order   Order  @relation(fields: [orderId], references: [id])
+  
+  pizzaId Int
+  pizza Pizza @relation(fields: [pizzaId], references: [id])
+  
+  quantity Int @default(1)
+
+  @@map("order-item")
+}
+
+model User {
+  id        Int @id @default(autoincrement())
+  username  String  
+  email String @unique
   password  String
   createdAt DateTime @default(now())
+
+  // Связи
+  orders    Order[]   // один ко многим
+  userCart      UserCart?      // один к одному
 
   @@map("user")
 }

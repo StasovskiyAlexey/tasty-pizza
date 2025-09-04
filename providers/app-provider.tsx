@@ -4,20 +4,17 @@ import React from 'react'
 import { QueryProvider } from './query-provider'
 import { StoreProvider } from './store-provider'
 import { MuiProvider } from './mui-provider'
-
-import {ToastProvider} from "@heroui/toast";
-import {HeroUIProvider} from '@heroui/react'
+import { AuthProvider } from './auth-provider'
 
 export default function AppProvider({children}: {children: React.ReactNode}) {
   return (
     <QueryProvider>
       <StoreProvider>
-        <MuiProvider>
-          <HeroUIProvider>
-            <ToastProvider/>
-              {children}
-          </HeroUIProvider>
-        </MuiProvider>
+        <AuthProvider>
+          <MuiProvider>
+            {children}
+          </MuiProvider>
+        </AuthProvider>
       </StoreProvider>
     </QueryProvider>
   )
