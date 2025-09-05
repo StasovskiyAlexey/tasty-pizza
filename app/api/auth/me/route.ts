@@ -15,6 +15,11 @@ export type UserWithOrderAndUserCart = Prisma.UserGetPayload<{
           }
         }
       }
+    },
+    userCart: {
+      include: {
+        items: true
+      }
     }
   }
 }>

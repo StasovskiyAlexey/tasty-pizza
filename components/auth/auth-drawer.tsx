@@ -27,8 +27,9 @@ export default function AuthDrawer() {
   return (
     <>
       <Drawer anchor="right" open={mainStore.auth} onClose={() => mainStore.toggler('auth', !true)}>
-        <div onClick={() => mainStore.toggler('auth', false)} className="close ml-auto mt-4 mr-4 cursor-pointer">
-          <X/>
+        <div className="close flex justify-between p-4">
+          <h1>Особистий кабінет користувача</h1>
+          <X className="cursor-pointer" onClick={() => mainStore.toggler('auth', false)} />
         </div>
           <div className="w-md px-4 h-full pb-4">
             {userStore.token
@@ -39,10 +40,10 @@ export default function AuthDrawer() {
                   {/* Информация о пользователе */}
                   <div>
                     <h1 className="mb-2">
-                      👤 Користувач: <span className="text-purple-600">{userData?.username}</span>
+                      👤 Користувач: <span className="text-orange-600">{userData?.username}</span>
                     </h1>
-                    <p className="text-gray-600">
-                      📧 Email: <span className="font-medium">{userData?.email}</span>
+                    <p>
+                      📧 Email: <span className="text-orange-600">{userData?.email}</span>
                     </p>
 
                   {/* Заказы */}

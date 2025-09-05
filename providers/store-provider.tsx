@@ -7,7 +7,7 @@ import useFilterStore from "@/store/filter-store";
 import useMainStore from "@/store/main-store";
 
 import { createContext, useContext } from "react";
-import useAuthStore, { userStore } from "@/store/user-store";
+import useUserStore, { userStore } from "@/store/user-store";
 
 type StoresContextType = {
   mainStore: MainStore;
@@ -22,7 +22,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const mainStore = useMainStore();
   const dataStore = useDataStore();
   const filterStore = useFilterStore();
-  const userStore = useAuthStore();
+  const userStore = useUserStore();
 
   return <StoreContext.Provider value={{mainStore, dataStore, filterStore, userStore}}>
     {children}

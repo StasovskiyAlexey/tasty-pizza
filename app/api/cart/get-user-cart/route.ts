@@ -1,6 +1,17 @@
 import { prisma } from "@/lib/prisma-client";
 import { failure, success } from "@/lib/response";
+import { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
+
+export type UserCart = Prisma.UserCartGetPayload<{
+  include: {
+    items: {
+      include: {
+        product: true
+      }
+    }
+  }
+}>;
 
 export async function POST(req: NextRequest) {
   try {

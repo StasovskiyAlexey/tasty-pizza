@@ -12,9 +12,10 @@ import { useStoreContext } from '@/providers/store-provider'
 import { PizzaWithCollections } from '@/app/api/products/route'
 import { Button } from '../ui/button'
 import { Switch } from '../ui/switch'
+import { toast } from 'sonner'
 
 export default function PizzaModal() {
-  const {mainStore, dataStore} = useStoreContext();
+  const {mainStore, dataStore, userStore} = useStoreContext();
   const [enabled, setEnabled] = useState(false)
   const [counter, setCounter] = useState<number>(1);
   
@@ -25,13 +26,22 @@ export default function PizzaModal() {
     setEnabled(false);
   }
 
-  /* function increment() {
-    setCounter(prev => prev + 1);
+  async function addToCart({userId, productId}: {userId: number, productId: number}) {
+    const res = await fetch('/api/cart/add-to-user-cart', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: userId,
+        productId: productId
+      })
+    })
+    const data = await res.json();
+    if (data.success) {
+      toast(data.data);
+    } else {
+      toast(data.error)
+    }
+    return data;
   }
-
-  function decrement() {
-    setCounter(prev => prev - 1);
-  } */
 
   return (
     <Dialog onOpenChange={() => {mainStore.toggler('pizza', false); clearAllParams()}} open={mainStore.pizza}>
@@ -113,7 +123,7 @@ export default function PizzaModal() {
               >
                 Закрити
               </Button>
-              <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white">
+              <Button onClick={() => addToCart({userId: userStore.user.id, productId: pizza.id})} className="flex-1 bg-orange-500 hover:bg-orange-600 text-white">
                 Додати в кошик
               </Button>
             </div>
