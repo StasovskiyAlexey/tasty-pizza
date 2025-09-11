@@ -7,13 +7,15 @@ import useFilterStore from "@/store/filter-store";
 import useMainStore from "@/store/main-store";
 
 import { createContext, useContext } from "react";
-import useUserStore, { userStore } from "@/store/user-store";
+import useUserStore, { UserStore } from "@/store/user-store";
+import useProductStore, {CartStore} from "@/store/cart-store";
 
 type StoresContextType = {
   mainStore: MainStore;
   dataStore: DataStore;
   filterStore: FilterStore;
-  userStore: userStore
+  userStore: UserStore;
+  cartStore: CartStore;
 };
 
 const StoreContext = createContext<StoresContextType | undefined>(undefined);
@@ -23,8 +25,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const dataStore = useDataStore();
   const filterStore = useFilterStore();
   const userStore = useUserStore();
+  const cartStore = useProductStore();
 
-  return <StoreContext.Provider value={{mainStore, dataStore, filterStore, userStore}}>
+  return <StoreContext.Provider value={{mainStore, dataStore, filterStore, userStore, cartStore}}>
     {children}
   </StoreContext.Provider>
 }

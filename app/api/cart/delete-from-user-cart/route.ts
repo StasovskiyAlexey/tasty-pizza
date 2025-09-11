@@ -5,11 +5,11 @@ import { NextRequest } from "next/server";
 export async function DELETE(req: NextRequest) {
   try {
     const body = await req.json();
-    const {productId, cartId, id} = body;
+    const {variantId, cartId, id} = body;
 
-    console.log(productId, cartId, id)
+    console.log(variantId, cartId, id)
 
-    if (!productId || !cartId) {
+    if (!variantId || !cartId) {
       return failure('Немає данних');
     }
 
@@ -17,7 +17,7 @@ export async function DELETE(req: NextRequest) {
       where: {
         id: id,
         cartId: cartId,
-        productId: productId,
+        variantId: variantId,
       }
     })
     console.log(userCartItem)

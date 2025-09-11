@@ -7,7 +7,11 @@ export type UserCart = Prisma.UserCartGetPayload<{
   include: {
     items: {
       include: {
-        product: true
+        variant: {
+          include: {
+            pizza: true
+          }
+        }
       }
     }
   }
@@ -35,7 +39,11 @@ export async function POST(req: NextRequest) {
       include: {
         items: {
           include: {
-            product: true
+            variant: {
+              include: {
+                pizza: true
+              }
+            }
           }
         }
       }

@@ -22,12 +22,29 @@ model Pizza {
   weight Int?
   category String?
 
-  cartItems UserCartItem[]
+  variants PizzaVariant[]
   collection PizzaCollection[]
 
   orderItems OrderItem[]
 
   @@map("pizza")
+}
+
+model PizzaVariant {
+  id        Int @id @default(autoincrement())
+  pizzaId   Int
+  pizza     Pizza @relation(fields: [pizzaId], references: [id])
+
+  size      String   // например: "30 см", "35 см"
+  dough     String   // например: "тонкое", "традиционное"
+  weight    Int?
+  price     Int
+
+  cartItems UserCartItem[]
+  orderItems OrderItem[]
+
+  @@unique([pizzaId, size, dough]) // уникальность варианта
+  @@map("pizza_variant")
 }
 
 model PizzaCollection {
@@ -88,12 +105,12 @@ model UserCartItem {
   cartId    Int
   cart      UserCart   @relation(fields: [cartId], references: [id])
 
-  productId Int
-  product   Pizza    @relation(fields: [productId], references: [id])
+  variantId Int @default(1)
+  variant   PizzaVariant @relation(fields: [variantId], references: [id])
 
   quantity  Int        @default(1)
 
-  @@unique([cartId, productId]) // чтобы один товар не дублировался в корзине
+  @@unique([cartId, variantId]) // чтобы один товар не дублировался в корзине
   @@map("user-cart-item")
 }
 
@@ -115,6 +132,9 @@ model OrderItem {
   
   pizzaId Int
   pizza Pizza @relation(fields: [pizzaId], references: [id])
+
+  variantId Int
+  variant   PizzaVariant @relation(fields: [variantId], references: [id])
   
   quantity Int @default(1)
 
@@ -134,5 +154,3 @@ model User {
 
   @@map("user")
 }
-
-// Сделать доп. ингридиенты

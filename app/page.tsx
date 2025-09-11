@@ -10,7 +10,7 @@ export default async function Main() {
         <p className="text-gray-600 mb-6">
           Оберіть улюблену піцу з нашого меню та насолоджуйтесь смаком.
         </p>
-        <Link href='/pizza-list'><button className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition">
+        <Link href='/product-list'><button className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition">
           Переглянути меню
         </button></Link>
       </div>

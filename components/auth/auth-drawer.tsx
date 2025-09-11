@@ -26,16 +26,20 @@ export default function AuthDrawer() {
 
   return (
     <>
-      <Drawer anchor="right" open={mainStore.auth} onClose={() => mainStore.toggler('auth', !true)}>
-        <div className="close flex justify-between p-4">
+      <Drawer sx={{
+        "& .MuiPaper-root": {
+          width: {xs: '100%', xl: '30%', lg: '40%'}
+        }
+      }} anchor="right" open={mainStore.auth} onClose={() => mainStore.toggler('auth', !true)}>
+        <div className="close flex justify-between p-4 border-b-1">
           <h1>Особистий кабінет користувача</h1>
           <X className="cursor-pointer" onClick={() => mainStore.toggler('auth', false)} />
         </div>
-          <div className="w-md px-4 h-full pb-4">
+          <div className="px-4 h-full pb-4 mt-4">
             {userStore.token
             ? 
             <>
-              {userData ? <div className="h-full flex flex-col justify-between">
+              {userData ? <div className="h-full flex flex-col justify-between w-full">
                 <div className="flex flex-col justify-between h-full gap-12">
                   {/* Информация о пользователе */}
                   <div>
@@ -97,7 +101,7 @@ export default function AuthDrawer() {
                     <span>Вийти з аккаунту</span>
                   </Button>
                 </div>
-              </div> : <div className="h-full flex flex-col justify-center items-center"><Spinner color="warning" /></div>}
+              </div> : <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div>}
             </>
             :
             <>

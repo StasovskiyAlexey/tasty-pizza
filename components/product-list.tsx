@@ -19,6 +19,7 @@ export default function ProductList() {
     queryFn: async () => {
       const pizzas = await fetch('/api/products');
       const data = await pizzas.json();
+      console.log(data)
       dataStore.getPizzaData(data.data) // Основной массив данных
       dataStore.getFilteredData(data.data) // Дополнительный для фильтрации
       return data.data;
@@ -27,6 +28,7 @@ export default function ProductList() {
 
   useEffect(() => {
     filterStore.updateFiltered(dataStore.pizzaData)
+    console.log(dataStore.pizzaData)
   }, [isLoading])
 
   const filteredPizzaData = filterStore.filteredPizza;
@@ -35,14 +37,14 @@ export default function ProductList() {
     <div className="pizza-list">
       <div className="pizza-list__container max-w-7xl mx-auto grid my-12 w-11/12">
         <PizzaSelectType/>
-        <div className="grid md:grid-cols-[20%_80%] py-8">
+        <div className="grid lg:grid-cols-[1fr_4fr] py-8">
           <PizzaFilterBar/>
           
-            {!isLoading ? (filteredPizzaData.length >= 1 ? <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">{filteredPizzaData.map(pizza => (
+            {!isLoading ? (filteredPizzaData.length >= 1 ? <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{filteredPizzaData.map(pizza => (
               <div key={pizza.id} onClick={() => {mainStore.toggler('pizza', true); dataStore.getPizza(pizza)}} className="pizza-item rounded-2xl flex flex-col items-center max-w-72 mx-auto hover:opacity-90 transition-opacity cursor-pointer hover:shadow-lg duration-300 p-4">
                 <Image src={pizza.image} alt={pizza.name} width={300} height={300}/>
                 <div className="pizza-item__info flex flex-col gap-4 w-full">
-                  <h1 className="text-2xl mt-4">{pizza.name}</h1>
+                  <h1 className="lg:text-2xl xs:text-lg mt-4">{pizza.name}</h1>
                     <p className="text-orange-500 text-lg">{pizza.price} грн</p>
                     {pizza.collection.map(collection => {
                       const ingredients = collection.collection.ingredients.map(item => item.ingredient.ingridient_name).join(', ');
@@ -57,13 +59,13 @@ export default function ProductList() {
               : <div className="flex flex-col justify-center items-center">
               <Image src={no_pizza} alt="" className="max-w-32"/>
               <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
-              </div>) : <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-12">{(
+              </div>) : <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{(
               Array.from({length: 6 }).map((_, i) => (
                 <div
                   key={i}
                   className="pizza-item flex flex-col items-center max-w-72 mx-auto p-4"
                 >
-                  <Skeleton className="w-[300px] h-[300px] rounded-xl" />
+                  <Skeleton className="lg:w-[300px] xs:w-48 lg:h-[300px] xs:h-72 rounded-xl" />
                   <div className="pizza-item__info flex flex-col gap-4 w-full mt-4">
                     <Skeleton className="h-6 w-2/3" />
                     <Skeleton className="h-5 w-1/3" />

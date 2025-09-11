@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 
 export type PizzaWithCollections = Prisma.PizzaGetPayload<{
   include: {
+    variants: true,
     collection: {
       include: {
         collection: {
@@ -22,8 +23,9 @@ export type PizzaWithCollections = Prisma.PizzaGetPayload<{
 
 export async function GET() {
   try {
-    const allPizzas = await prisma.pizza.findMany({
+    const products = await prisma.pizza.findMany({
       include: {
+        variants: true,
         collection: {
           include: {
             collection: {
@@ -39,7 +41,7 @@ export async function GET() {
         }
       }
     });
-    return success(allPizzas, 200)
+    return success(products, 200)
   } catch (e) {
     console.log(e);
     return failure('Помилка отримання продуктів');
