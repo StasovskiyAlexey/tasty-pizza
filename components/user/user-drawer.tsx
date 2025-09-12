@@ -13,7 +13,7 @@ import Register from "./register";
 import { UserWithOrderAndUserCart } from "@/app/api/auth/me/route";
 import { useAuthContext } from "@/providers/auth-provider";
 import { X } from "lucide-react";
-import { getUserOrders } from "@/lib/query-api";
+import { useGetUserOrders } from "@/lib/query-api";
 import Image from "next/image";
 
 import {
@@ -23,7 +23,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-export default function AuthDrawer() {
+export default function UserDrawer() {
   const {mainStore, userStore} = useStoreContext();
   const {getUser, logout} = useAuthContext();
   const [userData, setUserData] = useState<UserWithOrderAndUserCart>();
@@ -33,8 +33,8 @@ export default function AuthDrawer() {
     getUser().then(data => setUserData(data.data))
   }, [userStore.token])
 
-  const {data: userOrders, isLoading: userOrdersLoader} = getUserOrders(userStore.user.id);
-  console.log(userOrders)
+  const {data: userOrders, isLoading: userOrdersLoader} = useGetUserOrders(userStore.user.id);
+  
   return (
     <>
       <Drawer sx={{
@@ -63,15 +63,14 @@ export default function AuthDrawer() {
 
                   {/* Заказы */}
                   <div className="mt-12">
-                    <h2 className="mb-4">🛒 Ваші замовлення</h2>
+                    <h2 className="">🛒 Ваші замовлення</h2>
 
                     <Accordion type="single"
                       collapsible
-                      className="w-full"
-                      defaultValue={userOrders?.[userOrders.length - 1].name}>
+                      className="w-full">
                     {userOrdersLoader ? <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div> : (userOrders?.length === 0 ? <span className="text-sm text-gray-500">Замовлень поки немає...</span> : userOrders?.map(item => (
                       <AccordionItem key={item.id} value={item.name}>
-                        <div className="space-y-6 overflow-auto max-h-[420px]">
+                        <div className="space-y-6">
                           <div
                             className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700"
                           >
@@ -83,9 +82,12 @@ export default function AuthDrawer() {
                                 <h4 className="text-xm">
                                   Загальна сумма замовлення {item?.totalPrice} грн
                                 </h4>
+                                <h5 className="text-xm">
+                                  Статус замовлення: <span className="">{item.status === 'PENDING' ? 'Очікується' : 'Завершено'}</span>
+                                </h5>
                               </div>
                             </AccordionTrigger>
-                            <AccordionContent className="flex flex-col gap-4 text-balance">
+                            <AccordionContent className="flex flex-col gap-4 text-balance overflow-auto max-h-[420px]">
                             <div className="flex flex-col gap-3 mt-4">
                               {item.items.map((item, idx) => (
                                 <div

@@ -4,11 +4,13 @@ import { useStoreContext } from "@/providers/store-provider";
 import Drawer from "@mui/material/Drawer";
 import { X } from "lucide-react";
 import { Input } from "../ui/input";
-import { getUserCart, useAddUserOrder } from "@/lib/query-api";
+import { useGetUserCart, useAddUserOrder, useDeleteUserCartItems } from "@/lib/query-api";
 import { Spinner } from "@heroui/spinner";
 import CartItem from "../cart/cart-item";
 import { Button } from "@heroui/button";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
+import empty_cart from '@/public/cart.png'
 
 type FormValues = {
   name: string;
@@ -20,20 +22,21 @@ type FormValues = {
 
 export default function PaymentDrawer() {
   const { mainStore, userStore, cartStore } = useStoreContext();
-  const { data: userCart, isLoading: userCartLoader } = getUserCart(userStore?.user?.id);
+  const { data: userCart, isLoading: userCartLoader } = useGetUserCart(userStore?.user?.id);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
 
   const addUserOrder = useAddUserOrder();
+  const deleteUserCartItems = useDeleteUserCartItems();
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
-    console.log("Cart items:", userCart?.items);
     addUserOrder.mutate({userId: userStore.user.id, name: data.name, phone: data.phone, street: data.street, house: data.house, apartment: data.apartment, totalPrice: cartStore.totalPrice});
+    reset();
   };
 
   return (
@@ -58,7 +61,7 @@ export default function PaymentDrawer() {
           className="flex flex-col justify-between gap-4 py-4 h-full"
         >
           {/* Имя */}
-          <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col h-full gap-y-4">
             <div>
             <Input
               type="text"
@@ -131,12 +134,21 @@ export default function PaymentDrawer() {
             </div>
           </div>
             {/* Список корзины */}
-            <div className="mt-4 max-h-[500px] overflow-auto">
-              {!userCartLoader ? (
-                userCart?.items?.map((el) => (
-                  <CartItem key={el.id} id={el.id} cartId={el.cartId} el={el} />
-                ))
-              ) : (
+            <div className={`mt-4 ${userCart?.items.length === 0 ? 'h-full' : 'max-h-[500px] overflow-auto'}`}>
+              {!userCartLoader ? 
+                <>
+                  {userCart?.items.length === 0
+                   ? 
+                  <div className="px-4 flex-col h-full flex justify-center items-center pb-4">
+                    <Image src={empty_cart} alt="empty_cart" width={150} height={150}/>
+                    <h1 className="">В кошику 0 товарів</h1>
+                  </div>
+                    : 
+                  userCart?.items?.map((el) => (
+                    <CartItem key={el.id} id={el.id} cartId={el.cartId} el={el} />
+                  ))}
+                </>
+               : (
                 <div className="h-full w-full flex justify-center items-center">
                   <Spinner color="warning" />
                 </div>
@@ -146,14 +158,15 @@ export default function PaymentDrawer() {
 
           {/* Кнопка оформления */}
           <div>
-            <h2 className="lg:text-xl xs:text-base">Загальна ціна замовлення: {cartStore.totalPrice} грн</h2>
+            {userCart?.items.length === 0 ? null : <h2 className="lg:text-xl xs:text-base">Загальна ціна замовлення: {cartStore.totalPrice} грн</h2>}
             <Button
+              onPress={() => deleteUserCartItems.mutate({userId: userStore.user.id})}
               type="submit"
               disabled={userCart?.items?.length === 0}
               color="warning"
-              className="rounded-md w-full py-3 mt-2"
+              className="rounded-md w-full py-3 mt-2 disabled:bg-gray-400"
             >
-              <span className="text-white">Оформити замовлення</span>
+              <span className="text-white">Замовити</span>
             </Button>
           </div>
         </form>

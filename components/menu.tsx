@@ -1,11 +1,14 @@
 'use client'
 
+import { useGetUserCart } from "@/lib/query-api";
 import { useStoreContext } from "@/providers/store-provider"
 import Drawer from "@mui/material/Drawer";
 import { X } from "lucide-react";
 
 export default function Menu() {
-  const { mainStore } = useStoreContext();
+  const { mainStore, userStore } = useStoreContext();
+  const { data: userCart } = useGetUserCart(userStore?.user?.id);
+
   return (
     <Drawer sx={{
       "& .MuiPaper-root": {
@@ -17,11 +20,11 @@ export default function Menu() {
         <X size={30} className="cursor-pointer" onClick={() => mainStore.toggler('menu', false)} />
       </div>
       <ul className="flex flex-col p-4 space-y-4 h-full items-center justify-center">
-        <li onClick={() => {mainStore.toggler('auth', true); mainStore.toggler('menu', false)}} className="hover:text-orange-500 transition-colors cursor-pointer">
+        <li onClick={() => {mainStore.toggler('auth', true); mainStore.toggler('menu', false)}} className="hover:text-orange-500 transition-colors cursor-pointer lg:text-2xl xs:text-xl">
           Особистий кабінет
         </li>
-        <li onClick={() => {mainStore.toggler('cart', true); mainStore.toggler('menu', false)}} className="hover:text-orange-500 transition-colors cursor-pointer">
-          Кошик
+        <li onClick={() => {mainStore.toggler('cart', true); mainStore.toggler('menu', false)}} className="hover:text-orange-500 transition-colors cursor-pointer lg:text-2xl xs:text-xl">
+          Кошик ({userCart?.items.length})
         </li>
       </ul>
     </Drawer>

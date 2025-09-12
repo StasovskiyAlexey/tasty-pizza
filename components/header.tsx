@@ -9,11 +9,11 @@ import classNames from 'classnames';
 
 import logo from '@/public/tasty_pizza.png'
 import { useStoreContext } from '@/providers/store-provider';
-import { getUserCart } from '@/lib/query-api'
+import { useGetUserCart } from '@/lib/query-api'
 
 export default function Header() {
   const {mainStore, userStore} = useStoreContext();
-  const {data: userCart} = getUserCart(userStore?.user?.id);
+  const {data: userCart} = useGetUserCart(userStore?.user?.id);
 
   return (
     <header className='header bg-orange-400'>

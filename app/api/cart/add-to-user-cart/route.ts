@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       return failure('Немає ID юзера або ID продукту')
     }
 
-    let userCart = await prisma.userCart.findUnique({ // Находим корзину пользователя
+    const userCart = await prisma.userCart.findUnique({ // Находим корзину пользователя
       where: {
         userId: userId
       }
@@ -38,13 +38,14 @@ export async function POST(req: NextRequest) {
     })
 
     let updatedItem: UserCartItem;
+    if (!userCart) return failure('Немає кошику користувача');
 
     if (existingItem) {
       // Если товар есть — увеличиваем количество
       updatedItem = await prisma.userCartItem.update({
         where: {
           cartId_variantId: {
-            cartId: userCart?.id as number,
+            cartId: userCart?.id,
             variantId,
           },
         },

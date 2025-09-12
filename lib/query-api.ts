@@ -2,7 +2,7 @@
 
 import { UserCart } from "@/app/api/cart/get-user-cart/route";
 import { OrderType } from "@/app/api/order/get-user-orders/route";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export interface Order {
@@ -15,7 +15,7 @@ export interface Order {
   status?: string;
 }
 
-export function getUserCart(userId?: number) {
+export function useGetUserCart(userId?: number) {
   return useQuery<UserCart>({
     queryKey: ["userCart", userId], // уникальный ключ кеша
     queryFn: async () => {
@@ -31,7 +31,28 @@ export function getUserCart(userId?: number) {
   });
 }
 
-export function getUserOrders(userId?: number) {
+export function useDeleteUserCartItems() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({userId}: {userId: number}) => {
+      const res = await fetch('/api/cart/clear-user-cart', {
+        method: 'DELETE',
+        body: JSON.stringify({userId})
+      })
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.data || "Error");
+      return data.data;
+    },
+    onSuccess: (variables) => {
+      // инвалидируем кэш корзины, чтобы перезапросить свежие данные
+      queryClient.invalidateQueries({
+        queryKey: ["userCart", variables.userId], // Мутируем кеш корзины по её ключу
+      });
+    }
+  });
+}
+
+export function useGetUserOrders(userId?: number) {
   return useQuery<OrderType[]>({
     queryKey: ["userOrder", userId], // уникальный ключ кеша
     queryFn: async () => {
@@ -57,7 +78,6 @@ export function useAddUserOrder() {
       })
       const data = await res.json();
       if (!res.ok) throw new Error(data.data || "Error");
-      console.log(res, data)
       return data.data;
     },
     onSuccess: (data, variables) => {
@@ -68,8 +88,8 @@ export function useAddUserOrder() {
         queryKey: ["userOrder", variables.userId], // Мутируем кеш корзины по её ключу
       });
     },
-    onError: (error: any) => {
-      toast.error(error.data || "Помилка при додаванні до замовлень");
+    onError: (error) => {
+      toast.error(error.message || "Помилка при додаванні до замовлень");
     },
   });
 }
@@ -97,7 +117,7 @@ export function useDeleteCartItem(userId: number) {
         queryKey: ["userCart", userId],
       });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message || "Помилка при видалення продукту з кошика");
     },
   })
@@ -125,8 +145,8 @@ export function useAddToCart() {
         queryKey: ["userCart", variables.userId], // Мутируем кеш корзины по её ключу
       });
     },
-    onError: (error: any) => {
-      toast.error(error.data || "Помилка при додаванні до кошика");
+    onError: (error) => {
+      toast.error(error.message || "Помилка при додаванні до кошика");
     },
   });
 }

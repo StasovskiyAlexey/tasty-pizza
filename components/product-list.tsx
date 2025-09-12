@@ -19,7 +19,6 @@ export default function ProductList() {
     queryFn: async () => {
       const pizzas = await fetch('/api/products');
       const data = await pizzas.json();
-      console.log(data)
       dataStore.getPizzaData(data.data) // Основной массив данных
       dataStore.getFilteredData(data.data) // Дополнительный для фильтрации
       return data.data;
@@ -28,7 +27,6 @@ export default function ProductList() {
 
   useEffect(() => {
     filterStore.updateFiltered(dataStore.pizzaData)
-    console.log(dataStore.pizzaData)
   }, [isLoading])
 
   const filteredPizzaData = filterStore.filteredPizza;

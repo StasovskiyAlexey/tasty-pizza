@@ -1,6 +1,6 @@
 'use client'
 
-import { getUserCart, useAddToCart, useDeleteCartItem } from "@/lib/query-api";
+import { useGetUserCart, useAddToCart, useDeleteCartItem } from "@/lib/query-api";
 import { useStoreContext } from "@/providers/store-provider";
 import { Check, Trash } from "lucide-react";
 import Image from "next/image";
@@ -30,11 +30,6 @@ export default function CartItem({el, cartId, id}: {el: productEl, cartId: numbe
   const {userStore, cartStore} = useStoreContext();
 
   const counter = cartStore?.counters[el.id];
-  /* console.log(el) */
-
-  useEffect(() => {
-    console.log(counter, cartStore.counters)
-  }, [counter])
 
   const addToCart = useAddToCart();
   const deleteFromCart = useDeleteCartItem(userStore.user.id);
@@ -44,19 +39,17 @@ export default function CartItem({el, cartId, id}: {el: productEl, cartId: numbe
     cartStore.resetCounter()
   }
 
-  const {data: userCart} = getUserCart(userStore?.user?.id);
+  const {data: userCart} = useGetUserCart(userStore?.user?.id);
   
   useEffect(() => {
-    const totalPrice = userCart?.items.reduce((acc, curr) => acc + curr.variant.price * curr.quantity, 0); // Проблема в варианте
+    const totalPrice = userCart?.items.reduce((acc, curr) => acc + curr.variant.price * curr.quantity, 0);
     cartStore.setTotalPrice(totalPrice as number)
-    console.log(userCart?.items)
-    console.log(totalPrice)
   }, [userCart?.items, cartStore.counters])
 
   return (
     <div
       key={el.id}
-      className="flex items-center gap-4 p-4 w-full mx-auto mb-4 border-b-1 border-black"
+      className="flex items-center gap-4 p-4 w-full mx-auto mb-4 border-b-1"
     >
       {/* Изображение */}
       <Image
