@@ -140,7 +140,7 @@ export default function UserDrawer() {
             :
             <>
             <h1 className="">{userStore.mode ? 'Вхід до аккаунту' : 'Реєстрація аккаунта'}</h1>
-            <Tabs onValueChange={value => userStore.setMode(value)} value={userStore.mode} defaultValue="login" className="w-full">
+            <Tabs onValueChange={value => userStore.setMode(value as "login" | "register")} value={userStore.mode} defaultValue="login" className="w-full">
               <TabsList className="w-full">
                 <TabsTrigger value="login">Логін</TabsTrigger>
                 <TabsTrigger value="register">Реєстрація</TabsTrigger>
