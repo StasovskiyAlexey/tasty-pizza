@@ -33,7 +33,7 @@ export default function UserDrawer() {
     getUser().then(data => setUserData(data.data))
   }, [userStore.token])
 
-  const {data: userOrders, isLoading: userOrdersLoader} = useGetUserOrders(userStore.user.id);
+  const {data: userOrders, isLoading: userOrdersLoader} = useGetUserOrders(userStore?.user?.id);
   
   return (
     <>
