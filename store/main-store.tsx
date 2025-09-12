@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export interface MainStore {
   pizza: boolean;
+  order: boolean;
   menu: boolean;
   cart: boolean;
   auth: boolean;
@@ -10,6 +11,7 @@ export interface MainStore {
 
 const useMainStore = create<MainStore>((set) => ({
   pizza: false,
+  order: false,
   menu: false,
   cart: false,
   auth: false,

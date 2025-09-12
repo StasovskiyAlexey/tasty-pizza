@@ -9,7 +9,7 @@ import classNames from 'classnames';
 
 import logo from '@/public/tasty_pizza.png'
 import { useStoreContext } from '@/providers/store-provider';
-import { getUserCart } from '@/lib/api'
+import { getUserCart } from '@/lib/query-api'
 
 export default function Header() {
   const {mainStore, userStore} = useStoreContext();

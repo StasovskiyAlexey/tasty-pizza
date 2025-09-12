@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,68 +8,61 @@ datasource db {
 }
 
 model Pizza {
-  id          Int @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
   description String
   image       String
   price       Int
-  weight Int?
-  category String?
-
-  variants PizzaVariant[]
-  collection PizzaCollection[]
-
-  orderItems OrderItem[]
+  weight      Int?
+  category    String?
+  orderItems  OrderItem[]
+  collection  PizzaCollection[]
+  variants    PizzaVariant[]
 
   @@map("pizza")
 }
 
 model PizzaVariant {
-  id        Int @id @default(autoincrement())
-  pizzaId   Int
-  pizza     Pizza @relation(fields: [pizzaId], references: [id])
-
-  size      String   // например: "30 см", "35 см"
-  dough     String   // например: "тонкое", "традиционное"
-  weight    Int?
-  price     Int
-
-  cartItems UserCartItem[]
+  id         Int            @id @default(autoincrement())
+  pizzaId    Int
+  size       String
+  dough      String
+  weight     Int?
+  price      Int
   orderItems OrderItem[]
+  pizza      Pizza          @relation(fields: [pizzaId], references: [id])
+  cartItems  UserCartItem[]
 
-  @@unique([pizzaId, size, dough]) // уникальность варианта
+  @@unique([pizzaId, size, dough])
   @@map("pizza_variant")
 }
 
 model PizzaCollection {
-  pizza_name String
-  pizzaId Int
-  collectionId Int 
-
-  pizza Pizza @relation(fields: [pizzaId], references: [id])
-  collection IngredientCollection @relation(fields: [collectionId], references: [id])
+  pizza_name   String
+  pizzaId      Int
+  collectionId Int
+  collection   IngredientCollection @relation(fields: [collectionId], references: [id])
+  pizza        Pizza                @relation(fields: [pizzaId], references: [id])
 
   @@id([pizzaId, collectionId])
   @@map("pizza_collection")
 }
 
 model IngredientCollection {
-  id         Int @id @default(autoincrement())
-  name       String
-
-  pizzas PizzaCollection[]
+  id          Int                       @id @default(autoincrement())
+  name        String
   ingredients IngredientOnCollections[]
+  pizzas      PizzaCollection[]
 
   @@map("ingridient_collection")
 }
 
 model Ingredient {
-  id Int @id @default(autoincrement())
+  id              Int                       @id @default(autoincrement())
   ingridient_name String
-  image String
-  slug String?
-
-  collection  IngredientOnCollections[]
+  image           String
+  slug            String?
+  collection      IngredientOnCollections[]
 
   @@map("ingridient")
 }
@@ -83,74 +70,81 @@ model Ingredient {
 model IngredientOnCollections {
   ingredientId Int
   collectionId Int
-
-  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
-  collection  IngredientCollection @relation(fields: [collectionId], references: [id])
+  collection   IngredientCollection @relation(fields: [collectionId], references: [id])
+  ingredient   Ingredient           @relation(fields: [ingredientId], references: [id])
 
   @@id([ingredientId, collectionId])
   @@map("ingredient_on_collections")
 }
 
 model UserCart {
-  id        Int          @id @default(autoincrement())
-  userId    Int          @unique
-  user      User         @relation(fields: [userId], references: [id])
+  id     Int            @id @default(autoincrement())
+  userId Int            @unique
+  user   User           @relation(fields: [userId], references: [id])
+  items  UserCartItem[]
 
-  items     UserCartItem[]
   @@map("user-cart")
 }
 
 model UserCartItem {
-  id        Int        @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   cartId    Int
-  cart      UserCart   @relation(fields: [cartId], references: [id])
-
-  variantId Int @default(1)
+  variantId Int          @default(1)
+  quantity  Int          @default(1)
+  cart      UserCart     @relation(fields: [cartId], references: [id])
   variant   PizzaVariant @relation(fields: [variantId], references: [id])
 
-  quantity  Int        @default(1)
-
-  @@unique([cartId, variantId]) // чтобы один товар не дублировался в корзине
+  @@unique([cartId, variantId])
   @@map("user-cart-item")
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-
+  totalPrice Int
+  createdAt DateTime    @default(now())
+  status    OrderStatus @default(PENDING)
+  name      String
+  phone     String
+  street    String
+  apartment String
+  house     String
+  user      User        @relation(fields: [userId], references: [id])
   items     OrderItem[]
 
-  @@map("order")
+  @@map("orders")
 }
 
 model OrderItem {
-  id       Int    @id @default(autoincrement())
-  orderId  Int
-  order   Order  @relation(fields: [orderId], references: [id])
-  
-  pizzaId Int
-  pizza Pizza @relation(fields: [pizzaId], references: [id])
-
+  id        Int          @id @default(autoincrement())
+  orderId   Int
+  pizzaId   Int
   variantId Int
+  quantity  Int          @default(1)
+  price     Float
+  order     Order        @relation(fields: [orderId], references: [id])
+  pizza     Pizza        @relation(fields: [pizzaId], references: [id])
   variant   PizzaVariant @relation(fields: [variantId], references: [id])
-  
-  quantity Int @default(1)
 
   @@map("order-item")
 }
 
 model User {
-  id        Int @id @default(autoincrement())
-  username  String  
-  email String @unique
+  id        Int       @id @default(autoincrement())
+  username  String
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now())
-
-  // Связи
-  orders    Order[]   // один ко многим
-  userCart      UserCart?      // один к одному
+  createdAt DateTime  @default(now())
+  orders    Order[]
+  userCart  UserCart?
 
   @@map("user")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  DELIVERING
+  COMPLETED
+  CANCELED
 }

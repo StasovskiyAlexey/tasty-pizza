@@ -52,5 +52,6 @@ export async function GET(req: NextRequest) {
     return success(user, 200)
   } catch(e) {
     console.log(e)
+    return failure('Помилка при пошуку юзера', 401)
   }
 }

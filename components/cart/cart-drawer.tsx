@@ -9,7 +9,7 @@ import empty_cart from '@/public/cart.png'
 import CartItem from "./cart-item";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
-import { getUserCart } from "@/lib/api";
+import { getUserCart } from "@/lib/query-api";
 
 export default function CartDrawer() {
   const {mainStore, userStore, cartStore} = useStoreContext();
@@ -43,11 +43,12 @@ export default function CartDrawer() {
             {userCart && userCart.items.length >= 1 ? <h1 className="">Загальна сума: {cartStore?.totalPrice} грн</h1> : null}
           </div>
           <Button
+            onClick={() => {mainStore.toggler('order', true); mainStore.toggler('cart', false)}}
             disabled={userCart?.items?.length === 0}
             color="warning"
             className="rounded-md w-full py-3 mt-2"
           >
-            <span>Перейти до оплати</span>
+            <span className="text-white">Оформити замовлення</span>
           </Button>
         </div> : <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div>}
       </Drawer>

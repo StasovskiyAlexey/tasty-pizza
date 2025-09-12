@@ -1,6 +1,6 @@
 'use client'
 
-import { getUserCart, useAddToCart, useDeleteCartItem } from "@/lib/api";
+import { getUserCart, useAddToCart, useDeleteCartItem } from "@/lib/query-api";
 import { useStoreContext } from "@/providers/store-provider";
 import { Check, Trash } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +30,7 @@ export default function CartItem({el, cartId, id}: {el: productEl, cartId: numbe
   const {userStore, cartStore} = useStoreContext();
 
   const counter = cartStore?.counters[el.id];
-  console.log(el)
+  /* console.log(el) */
 
   useEffect(() => {
     console.log(counter, cartStore.counters)

@@ -13,6 +13,15 @@ import Register from "./register";
 import { UserWithOrderAndUserCart } from "@/app/api/auth/me/route";
 import { useAuthContext } from "@/providers/auth-provider";
 import { X } from "lucide-react";
+import { getUserOrders } from "@/lib/query-api";
+import Image from "next/image";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export default function AuthDrawer() {
   const {mainStore, userStore} = useStoreContext();
@@ -24,6 +33,8 @@ export default function AuthDrawer() {
     getUser().then(data => setUserData(data.data))
   }, [userStore.token])
 
+  const {data: userOrders, isLoading: userOrdersLoader} = getUserOrders(userStore.user.id);
+  console.log(userOrders)
   return (
     <>
       <Drawer sx={{
@@ -54,41 +65,62 @@ export default function AuthDrawer() {
                   <div className="mt-12">
                     <h2 className="mb-4">🛒 Ваші замовлення</h2>
 
-                    {userData?.orders.length === 0 && (
-                      <p className="text-gray-500">Замовлень поки немає.</p>
-                    )}
-
-                    <div className="space-y-6">
-                      {userData?.orders.map((order, index) => (
-                        <div
-                          key={index}
-                          className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700"
-                        >
-                          <h3 className="font-semibold text-lg mb-4">
-                            Замовлення #{order.id}
-                          </h3>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {order.items.map((item, idx) => (
-                              <div
-                                key={idx}
-                                className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                              >
-                                <div className="flex-1">
-                                  <p className="text-lg font-medium">{item.pizza.name}</p>
-                                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                    Вага: {item.pizza.weight || "—"} г
-                                  </p>
-                                  <p className="text-gray-800 dark:text-gray-200 font-semibold">
-                                    💵 {item.pizza.price} грн
-                                  </p>
-                                </div>
+                    <Accordion type="single"
+                      collapsible
+                      className="w-full"
+                      defaultValue={userOrders?.[userOrders.length - 1].name}>
+                    {userOrdersLoader ? <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div> : (userOrders?.length === 0 ? <span className="text-sm text-gray-500">Замовлень поки немає...</span> : userOrders?.map(item => (
+                      <AccordionItem key={item.id} value={item.name}>
+                        <div className="space-y-6 overflow-auto max-h-[420px]">
+                          <div
+                            className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700"
+                          >
+                            <AccordionTrigger>
+                              <div className="flex flex-col gap-y-2">
+                                <h3 className="text-xm">
+                                  Замовлення #{item.id}
+                                </h3>
+                                <h4 className="text-xm">
+                                  Загальна сумма замовлення {item?.totalPrice} грн
+                                </h4>
                               </div>
-                            ))}
+                            </AccordionTrigger>
+                            <AccordionContent className="flex flex-col gap-4 text-balance">
+                            <div className="flex flex-col gap-3 mt-4">
+                              {item.items.map((item, idx) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <Image
+                                      alt={item.variant.pizza.name}
+                                      width={80}
+                                      height={80}
+                                      className="rounded-md object-cover"
+                                      src={item.variant.pizza.image}
+                                    />
+                                    <div className="flex flex-col gap-1">
+                                      <p className="font-semibold text-gray-800 dark:text-gray-200">
+                                        {item.variant.pizza.name}
+                                      </p>
+                                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Вага: {item.variant.pizza.weight} г | {item.variant.size} см | {item.quantity} шт
+                                      </p>
+                                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        {item.variant.pizza.price} грн
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            </AccordionContent>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </AccordionItem>
+                    )))}
+                    </Accordion>
                   </div>
                   </div>
 

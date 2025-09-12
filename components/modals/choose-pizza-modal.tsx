@@ -12,7 +12,7 @@ import { useStoreContext } from '@/providers/store-provider'
 import { PizzaWithCollections } from '@/app/api/products/route'
 import { Button } from '../ui/button'
 import { Switch } from '../ui/switch'
-import { useAddToCart } from '@/lib/api'
+import { useAddToCart } from '@/lib/query-api'
 import { PizzaVariant } from '@prisma/client'
 
 export default function PizzaModal() {

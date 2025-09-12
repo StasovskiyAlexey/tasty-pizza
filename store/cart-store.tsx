@@ -28,3 +28,7 @@ const useProductStore = create<CartStore>((set) => ({
 }))
 
 export default useProductStore;
+
+// Сделать адрес юзера и оформление доставки
+/* \copy ingredient_on_collections("ingredientId", "collectionId") FROM '/mnt/e/1/ingredient_on_collections.csv' DELIMITER ',' CSV HEADER; */
+/* \copy pizza_collection("pizza_name", "pizzaId", "collectionId") FROM '/mnt/e/1/pizza_collection.csv' DELIMITER ',' CSV HEADER; */
