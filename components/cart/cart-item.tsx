@@ -49,7 +49,7 @@ export default function CartItem({el, cartId, id}: {el: productEl, cartId: numbe
   return (
     <div
       key={el.id}
-      className="flex items-center gap-4 p-4 w-full mx-auto mb-4 border-b-1"
+      className="flex items-center gap-4 p-4 w-full xs:w-[440px] mx-auto mb-4 border-b-1 overflow-x-auto"
     >
       {/* Изображение */}
       <Image

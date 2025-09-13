@@ -15,7 +15,7 @@ export default function PizzaSelectType() {
     isMobile
      ?
       <div ref={emblaRef} className="embla overflow-x-auto scrollbar-hide">
-        <div className="flex gap-3 px-4 py-2">
+        <div className="flex gap-3 py-2">
           {[
             { key: "all", label: "Усі" },
             { key: "meat", label: "М'ясна" },

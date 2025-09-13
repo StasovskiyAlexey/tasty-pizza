@@ -43,7 +43,7 @@ export default function UserDrawer() {
         }
       }} anchor="right" open={mainStore.auth} onClose={() => mainStore.toggler('auth', !true)}>
         <div className="close flex justify-between p-4 border-b-1">
-          <h1>Особистий кабінет користувача</h1>
+          <h1>Особистий кабінет</h1>
           <X className="cursor-pointer" onClick={() => mainStore.toggler('auth', false)} />
         </div>
           <div className="px-4 h-full pb-4 mt-4">
@@ -77,10 +77,10 @@ export default function UserDrawer() {
                             <AccordionTrigger>
                               <div className="flex flex-col gap-y-2">
                                 <h3 className="text-xm">
-                                  Замовлення #{item.id}
+                                  Замовлення: #{item.id}
                                 </h3>
                                 <h4 className="text-xm">
-                                  Загальна сумма замовлення {item?.totalPrice} грн
+                                  Загальна сумма замовлення: {item?.totalPrice} грн
                                 </h4>
                                 <h5 className="text-xm">
                                   Статус замовлення: <span className="">{item.status === 'PENDING' ? 'Очікується' : 'Завершено'}</span>

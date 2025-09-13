@@ -2,7 +2,7 @@
 
 import { UserCart } from "@/app/api/cart/get-user-cart/route";
 import { OrderType } from "@/app/api/order/get-user-orders/route";
-import { useMutation, useQuery, useQueryClient, UseMutationResult } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export interface Order {

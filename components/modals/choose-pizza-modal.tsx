@@ -46,7 +46,7 @@ export default function PizzaModal() {
     <Dialog onOpenChange={() => {mainStore.toggler('pizza', false)}} open={mainStore.pizza}>
       <DialogContent className="w-11/12 block !max-w-5xl h-11/12 max-h-max md:p-6 p-3 rounded-2xl overflow-auto">
       
-        <div className='grid lg:grid-cols-[1fr_1fr] xs:grid-cols-1 justify-center gap-12 items-center'>
+        <div className='grid lg:grid-cols-[1fr_1fr] xs:grid-cols-1 justify-center md:gap-12 xs:gap-0 items-center'>
           <Image
             src={pizza.image}
             alt={pizza.name}
