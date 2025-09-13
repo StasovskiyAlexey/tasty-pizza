@@ -3,18 +3,18 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useStoreContext } from "@/providers/store-provider"
 import { Button, ButtonGroup } from "@heroui/button";
-/* import useEmblaCarousel from 'embla-carousel-react' */
+import useEmblaCarousel from 'embla-carousel-react'
 
 export default function PizzaSelectType() {
   const {dataStore, filterStore} = useStoreContext();
   const isMobile = useIsMobile(768);
-  /* const [emblaRef] = useEmblaCarousel({loop: false}) */
+  const [emblaRef] = useEmblaCarousel({loop: false})
   const category = filterStore.category;
 
   return (
     isMobile
      ?
-      <div className="embla overflow-x-auto scrollbar-hide">
+      <div ref={emblaRef} className="embla overflow-x-auto scrollbar-hide">
         <div className="flex gap-3 px-4 py-2">
           {[
             { key: "all", label: "Усі" },

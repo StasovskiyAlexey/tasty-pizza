@@ -6,6 +6,7 @@ export interface MainStore {
   menu: boolean;
   cart: boolean;
   auth: boolean;
+  filter: boolean;
   toggler: (modal: string, boolean: boolean) => void;
 }
 
@@ -15,6 +16,7 @@ const useMainStore = create<MainStore>((set) => ({
   menu: false,
   cart: false,
   auth: false,
+  filter: false,
   toggler: (modal, boolean) => set({
     [modal]: boolean
   })

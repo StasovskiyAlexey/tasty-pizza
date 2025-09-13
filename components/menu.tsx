@@ -24,7 +24,7 @@ export default function Menu() {
           Особистий кабінет
         </li>
         <li onClick={() => {mainStore.toggler('cart', true); mainStore.toggler('menu', false)}} className="hover:text-orange-500 transition-colors cursor-pointer lg:text-2xl xs:text-xl">
-          Кошик ({userCart?.items.length})
+          Кошик {userCart?.items.length === 0 ? null : (`(${userCart?.items.length})`)}
         </li>
       </ul>
     </Drawer>

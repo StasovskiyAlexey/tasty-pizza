@@ -43,7 +43,7 @@ export default function Header() {
 
         <div onClick={() => mainStore.toggler('menu', !mainStore.menu)} className={classNames(`tham md:hidden tham-e-squeeze z-50 tham-w-6`, { 'tham-active': mainStore.menu })}>
           <div className="tham-box">
-            <div className="tham-inner bg-black" />
+            <div className="tham-inner bg-white" />
           </div>
         </div>
       </div>

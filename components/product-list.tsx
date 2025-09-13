@@ -10,6 +10,7 @@ import PizzaFilterBar from "./filter/pizza-filter-bar";
 
 import no_pizza from '@/public/no_pizza.png'
 import { useEffect } from "react";
+import FilterIcon from "./filter-icon";
 
 export default function ProductList() {
   const {mainStore, dataStore, filterStore} = useStoreContext();
@@ -33,7 +34,7 @@ export default function ProductList() {
 
   return (
     <div className="pizza-list">
-      <div className="pizza-list__container max-w-7xl mx-auto grid my-12 w-11/12">
+      <div className="pizza-list__container max-w-7xl mx-auto grid lg:my-12 xs:my-6 w-11/12">
         <PizzaSelectType/>
         <div className="grid lg:grid-cols-[1fr_4fr] py-8">
           <PizzaFilterBar/>
@@ -55,15 +56,15 @@ export default function ProductList() {
               ))}
               </div>
               : <div className="flex flex-col justify-center items-center">
-              <Image src={no_pizza} alt="" className="max-w-32"/>
-              <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
+                <Image src={no_pizza} alt="" className="max-w-32"/>
+                <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
               </div>) : <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{(
               Array.from({length: 6 }).map((_, i) => (
                 <div
                   key={i}
                   className="pizza-item flex flex-col items-center max-w-72 mx-auto p-4"
                 >
-                  <Skeleton className="lg:w-[300px] xs:w-48 lg:h-[300px] xs:h-72 rounded-xl" />
+                  <Skeleton className="lg:w-[300px] xm:w-48 xs:w-32 lg:h-[300px] sm:h-72 xs:h-48 rounded-xl" />
                   <div className="pizza-item__info flex flex-col gap-4 w-full mt-4">
                     <Skeleton className="h-6 w-2/3" />
                     <Skeleton className="h-5 w-1/3" />
@@ -76,6 +77,7 @@ export default function ProductList() {
           
         </div>
       </div>
+      <FilterIcon/>
     </div>
   );
 }
