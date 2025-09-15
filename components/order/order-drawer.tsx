@@ -38,7 +38,7 @@ export default function PaymentDrawer() {
     addUserOrder.mutate({userId: userStore.user.id, name: data.name, phone: data.phone, street: data.street, house: data.house, apartment: data.apartment, totalPrice: cartStore.totalPrice});
     reset();
   };
-
+  
   return (
     <Drawer
       sx={{
@@ -162,7 +162,7 @@ export default function PaymentDrawer() {
             <Button
               onPress={() => deleteUserCartItems.mutate({userId: userStore.user.id})}
               type="submit"
-              disabled={userCart?.items?.length === 0}
+              disabled={userCart?.items?.length === 0 || !userStore.token}
               color="warning"
               className="rounded-md w-full py-3 mt-2 disabled:bg-gray-400"
             >

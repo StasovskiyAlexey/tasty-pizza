@@ -26,7 +26,6 @@ export default function PizzaModal() {
     const currentVariant = pizza?.variants?.find(pizza => {
       return pizza.size === selectedSize;
     })
-    console.log(selectedVariant)
     setSelectedVariant(currentVariant as unknown as typeof pizza.variants[0] | null);
   }, [selectedSize])
 

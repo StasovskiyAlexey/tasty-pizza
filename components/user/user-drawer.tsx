@@ -34,7 +34,7 @@ export default function UserDrawer() {
   }, [userStore.token])
 
   const {data: userOrders, isLoading: userOrdersLoader} = useGetUserOrders(userStore?.user?.id);
-  
+
   return (
     <>
       <Drawer sx={{
@@ -69,7 +69,7 @@ export default function UserDrawer() {
                       collapsible
                       className="w-full">
                     {userOrdersLoader ? <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div> : (userOrders?.length === 0 ? <span className="text-sm text-gray-500">Замовлень поки немає...</span> : userOrders?.map(item => (
-                      <AccordionItem key={item.id} value={item.name}>
+                      <AccordionItem key={item.id} value={item.id.toString()}>
                         <div className="space-y-6">
                           <div
                             className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700"

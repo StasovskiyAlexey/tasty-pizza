@@ -10,6 +10,7 @@ import CartItem from "./cart-item";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
 import { useGetUserCart } from "@/lib/query-api";
+import { useEffect } from "react";
 
 export default function CartDrawer() {
   const {mainStore, userStore, cartStore} = useStoreContext();
@@ -46,7 +47,7 @@ export default function CartDrawer() {
           </div>
           <Button
             onPress={() => {mainStore.toggler('order', true); mainStore.toggler('cart', false)}}
-            disabled={userCart?.items?.length === 0}
+            disabled={userCart?.items?.length === 0 || !userStore.token}
             color="warning"
             className="rounded-md w-full py-3 mt-2 disabled:bg-gray-400"
           >

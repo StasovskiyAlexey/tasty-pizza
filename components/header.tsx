@@ -5,8 +5,6 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 
-import classNames from 'classnames';
-
 import logo from '@/public/tasty_pizza.png'
 import { useStoreContext } from '@/providers/store-provider';
 import { useGetUserCart } from '@/lib/query-api'

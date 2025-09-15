@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import Head from "next/head";
 import Menu from "@/components/menu";
 import PaymentDrawer from "@/components/order/order-drawer";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Найсмачніші піци у Києві | Tasty Pizza",
@@ -45,8 +46,11 @@ export default function RootLayout({
           <Toaster />
           
           {children}
+          <Footer/>
         </AppProvider>
       </body>
     </html>
   );
 }
+
+// Доделать косяки, например в начале есть доступ к заказу хотя нет товаров, и прочее, в общем пофиксить все мелкие мелочи и выложить в портфолио
