@@ -10,7 +10,6 @@ import CartItem from "./cart-item";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
 import { useGetUserCart } from "@/lib/query-api";
-import { useEffect } from "react";
 
 export default function CartDrawer() {
   const {mainStore, userStore, cartStore} = useStoreContext();

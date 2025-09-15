@@ -62,7 +62,7 @@ export default function UserDrawer() {
                     </p>
 
                   {/* Заказы */}
-                  <div className="mt-12">
+                  <div className="orders-block md:mt-12 xs:mt-4 max-h-[600px] overflow-auto">
                     <h2 className="">🛒 Ваші замовлення</h2>
 
                     <Accordion type="single"

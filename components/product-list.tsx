@@ -64,7 +64,7 @@ export default function ProductList() {
                   key={i}
                   className="pizza-item flex flex-col items-center max-w-72 mx-auto p-4"
                 >
-                  <Skeleton className="lg:w-[300px] xm:w-48 xs:w-32 lg:h-[300px] sm:h-72 xs:h-48 rounded-xl" />
+                  <Skeleton className="lg:w-[300px] md:w-64 xm:w-48 xs:w-32 lg:h-[300px] sm:h-72 xs:h-48 rounded-xl" />
                   <div className="pizza-item__info flex flex-col gap-4 w-full mt-4">
                     <Skeleton className="h-6 w-2/3" />
                     <Skeleton className="h-5 w-1/3" />
