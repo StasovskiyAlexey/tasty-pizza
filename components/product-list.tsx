@@ -38,11 +38,10 @@ export default function ProductList() {
         <PizzaSelectType/>
         <div className="grid lg:grid-cols-[1fr_4fr] py-8">
           <PizzaFilterBar/>
-          
             {!isLoading ? (filteredPizzaData.length >= 1 ? <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{filteredPizzaData.map(pizza => (
-              <div key={pizza.id} onClick={() => {mainStore.toggler('pizza', true); dataStore.getPizza(pizza)}} className="pizza-item rounded-2xl flex flex-col items-center max-w-72 mx-auto hover:opacity-90 transition-opacity cursor-pointer hover:shadow-lg duration-300 p-4">
+              <div key={pizza.id} onClick={() => {mainStore.toggler('pizza', true); dataStore.getPizza(pizza)}} className="pizza-item rounded-2xl flex flex-col items-center max-w-72 mx-auto hover:opacity-90 transition-opacity cursor-pointer hover:shadow-lg duration-300 md:p-4 xs:p-1">
                 <Image src={pizza.image} alt={pizza.name} width={300} height={300}/>
-                <div className="pizza-item__info flex flex-col gap-4 w-full">
+                <div className="pizza-item__info flex flex-col md:gap-4 xs:gap-2 w-full">
                   <h1 className="lg:text-2xl xs:text-lg mt-4">{pizza.name}</h1>
                     <p className="text-orange-500 text-lg">{pizza.price} грн</p>
                     {pizza.collection.map(collection => {
@@ -55,10 +54,13 @@ export default function ProductList() {
               </div>
               ))}
               </div>
-              : <div className="flex flex-col justify-center items-center">
-                <Image src={no_pizza} alt="" className="max-w-32"/>
-                <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
-              </div>) : <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{(
+              :
+              <div className="flex flex-col justify-center items-center">
+              <Image src={no_pizza} alt="" className="max-w-32"/>
+              <p className="flex justify-center items-center text-gray-500 text-sm">Немає піци за такими фільтрами</p>
+              </div>)
+                : 
+              <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 lg:gap-12 xs:gap-0">{(
               Array.from({length: 6 }).map((_, i) => (
                 <div
                   key={i}
@@ -73,8 +75,8 @@ export default function ProductList() {
                   </div>
                 </div>
               ))
-            )}</div>}
-          
+            )}
+          </div>}
         </div>
       </div>
       <FilterIcon/>

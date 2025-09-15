@@ -134,7 +134,7 @@ export default function PaymentDrawer() {
             </div>
           </div>
             {/* Список корзины */}
-            <div className={`mt-4 ${userCart?.items.length === 0 ? 'h-full' : 'max-h-[400px] overflow-auto'}`}>
+            <div className={`${userCart?.items.length === 0 ? 'h-full' : 'md:max-h-[500px] xs:max-h-[320px] overflow-auto'}`}>
               {!userCartLoader ? 
                 <>
                   {userCart?.items.length === 0

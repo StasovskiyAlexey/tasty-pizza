@@ -46,7 +46,7 @@ export default function UserDrawer() {
           <h1>Особистий кабінет</h1>
           <X className="cursor-pointer" onClick={() => mainStore.toggler('auth', false)} />
         </div>
-          <div className="px-4 h-full pb-4 mt-4">
+          <div className="px-4 h-full my-4">
             {userStore.token
             ? 
             <>
@@ -62,8 +62,8 @@ export default function UserDrawer() {
                     </p>
 
                   {/* Заказы */}
-                  <div className="orders-block md:mt-12 xs:mt-4 max-h-[600px] overflow-auto">
-                    <h2 className="">🛒 Ваші замовлення</h2>
+                  <div className="orders-block md:mt-12 xs:mt-4 md:max-h-[600px] xs:max-h-[400px] overflow-auto">
+                    <h2>🛒 Ваші замовлення</h2>
 
                     <Accordion type="single"
                       collapsible
@@ -71,20 +71,12 @@ export default function UserDrawer() {
                     {userOrdersLoader ? <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div> : (userOrders?.length === 0 ? <span className="text-sm text-gray-500">Замовлень поки немає...</span> : userOrders?.map(item => (
                       <AccordionItem key={item.id} value={item.id.toString()}>
                         <div className="space-y-6">
-                          <div
-                            className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700"
-                          >
+                          <div className="bg-white dark:bg-gray-900 shadow rounded-xl p-5 border border-gray-200 dark:border-gray-700">
                             <AccordionTrigger>
                               <div className="flex flex-col gap-y-2">
                                 <h3 className="text-xm">
                                   Замовлення: #{item.id}
                                 </h3>
-                                <h4 className="text-xm">
-                                  Загальна сумма замовлення: {item?.totalPrice} грн
-                                </h4>
-                                <h5 className="text-xm">
-                                  Статус замовлення: <span className="">{item.status === 'PENDING' ? 'Очікується' : 'Завершено'}</span>
-                                </h5>
                               </div>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 text-balance overflow-auto max-h-[420px]">
@@ -116,25 +108,30 @@ export default function UserDrawer() {
                                   </div>
                                 </div>
                               ))}
+                              <h4 className="text-xm">
+                                Загальна сумма замовлення: {item?.totalPrice} грн
+                              </h4>
+                              <h5 className="text-xm">
+                                Статус замовлення: <span className="">{item.status === 'PENDING' ? 'Очікується' : 'Завершено'}</span>
+                              </h5>
                             </div>
                             </AccordionContent>
                           </div>
                         </div>
-                      </AccordionItem>
+                    </AccordionItem>
                     )))}
-                    </Accordion>
+                  </Accordion>
                   </div>
                   </div>
-
-                  {/* Logout */}
+                </div>
+                {/* Logout */}
                   <Button
                     color="warning"
                     onClick={() => logout()}
-                    className="rounded-md w-full py-3"
+                    className="rounded-md w-full py-3 min-h-12"
                   >
                     <span>Вийти з аккаунту</span>
                   </Button>
-                </div>
               </div> : <div className="h-full w-full flex flex-col justify-center items-center"><Spinner color="warning" /></div>}
             </>
             :

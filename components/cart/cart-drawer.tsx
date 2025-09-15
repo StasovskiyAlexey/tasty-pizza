@@ -30,7 +30,7 @@ export default function CartDrawer() {
           <div className={`flex flex-col w-full h-full ${userCart && userCart?.items?.length >= 1 ? 'justify-start' : 'justify-between'}`}>
             {userCart && userCart.items.length >= 1
               ? 
-              <div className="overflow-auto max-h-[600px]">
+              <div className="overflow-auto md:max-h-[700px] xs:max-h-[400px]">
                 {userCart?.items?.map(el => (
                   <CartItem key={el.id} id={el.id} cartId={el.cartId} el={el}/>
                 ))}
